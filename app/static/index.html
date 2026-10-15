@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Emergency Department Online Check-In (demo)</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="/static/patient.css" rel="stylesheet"></head><body>
+<div class="demo-banner text-center py-1">Demonstration with synthetic data. Not affiliated with or approved by St. Joseph's Health Centre. Do not enter real personal information.</div>
+<main class="container py-4" style="max-width:760px">
+<div class="d-flex flex-wrap gap-2 justify-content-end mb-2">
+ <label class="visually-hidden" for="lang">Language</label>
+ <select id="lang" class="form-select form-select-sm w-auto"><option>English</option><option>Français (not translated in demo)</option></select>
+ <button class="btn btn-outline-secondary btn-sm" id="tText" type="button">Larger text</button>
+ <button class="btn btn-outline-secondary btn-sm" id="tCon" type="button">High contrast</button>
+</div>
+<div class="progress mb-1" role="progressbar" aria-label="Check-in progress"><div id="bar" class="progress-bar"></div></div>
+<p id="stepLabel" class="small text-muted" aria-live="polite"></p>
+
+<section class="step" data-n="1">
+ <h1>Emergency Department Online Check-In</h1>
+ <p class="lead">Complete your information before arriving to help streamline the registration process.</p>
+ <div class="alert alert-safety" role="alert"><strong>If you are experiencing a potentially life-threatening emergency, call 911 or seek immediate emergency assistance. Do not delay emergency care to complete this form.</strong></div>
+ <p>Online check-in does not reserve a place in the treatment queue or guarantee shorter waiting times.</p>
+ <p><a href="/static/privacy.html" target="_blank" rel="noopener">Privacy information</a></p>
+ <details class="mb-3"><summary>Cannot use the website? Register another way</summary><p class="mt-2">You can skip this form. Go to the emergency department triage desk and staff will register you in person, or ask someone to help you. Hospital phone numbers are not included in this demonstration.</p></details>
+ <button class="btn btn-primary btn-lg" data-go="2" type="button">Start Check-In</button>
+</section>
+
+<section class="step" data-n="2">
+ <h2>Patient information</h2>
+ <form id="f2" novalidate class="row g-3">
+  <div class="col-12"><label class="form-label" for="who">Who is this form for?</label>
+   <select id="who" class="form-select"><option value="self">Myself</option><option value="other">Another person (caregiver or substitute decision-maker)</option></select></div>
+  <div class="col-sm-6"><label class="form-label" for="fn">Legal first name</label><input id="fn" class="form-control" required autocomplete="off"><div class="invalid-feedback">Enter the legal first name.</div></div>
+  <div class="col-sm-6"><label class="form-label" for="ln">Legal last name</label><input id="ln" class="form-control" required autocomplete="off"><div class="invalid-feedback">Enter the legal last name.</div></div>
+  <div class="col-sm-6"><label class="form-label" for="pn">Preferred name (optional)</label><input id="pn" class="form-control"></div>
+  <div class="col-sm-6"><label class="form-label" for="dob">Date of birth</label><input id="dob" type="date" class="form-control" required><div class="invalid-feedback">Enter a valid date of birth that is not in the future.</div></div>
+  <div class="col-sm-6"><label class="form-label" for="ph">Phone number</label><input id="ph" type="tel" class="form-control" required placeholder="416-555-0123"><div class="invalid-feedback">Enter a 10-digit phone number.</div></div>
+  <div class="col-sm-6"><label class="form-label" for="em">Email (optional)</label><input id="em" type="email" class="form-control"><div class="invalid-feedback">Check the email format or leave it blank.</div><div class="form-text">No email? You can continue; staff will use your phone.</div></div>
+  <div class="col-12"><label class="form-label" for="needs">Accessibility or communication needs (optional)</label><input id="needs" class="form-control"></div>
+  <div class="col-12 d-flex gap-2"><button class="btn btn-outline-secondary" data-go="1" type="button">Back</button><button class="btn btn-primary" type="submit">Continue</button></div>
+ </form>
+</section>
+
+<section class="step" data-n="3">
+ <h2>Tell us what is happening</h2>
+ <p class="small">This simulated assistant organizes what you report. It does not diagnose and cannot tell you it is safe to wait.</p>
+ <div id="warn" class="alert alert-safety d-none" role="alert"></div>
+ <div id="chat" class="chat mb-2" aria-live="polite"></div>
+ <form id="chatForm" class="d-flex gap-2"><label class="visually-hidden" for="ans">Your answer</label><input id="ans" class="form-control" autocomplete="off"><button class="btn btn-primary" type="submit">Send</button></form>
+ <div class="d-flex gap-2 mt-3"><button class="btn btn-outline-secondary" data-go="2" type="button">Back</button><button class="btn btn-outline-secondary" id="redo" type="button">Start questions over</button><button id="to4" class="btn btn-primary" data-go="4" type="button" disabled>Continue</button></div>
+</section>
+
+<section class="step" data-n="4">
+ <h2>Ontario Health card</h2>
+ <p>Choose how to provide your card details. Photos are read once and not saved. Nothing is verified in this demo; results are simulated.</p>
+ <div class="d-flex flex-wrap gap-2 mb-3">
+  <button class="btn btn-outline-primary" id="scan" type="button">Scan with camera</button>
+  <label class="btn btn-outline-primary mb-0">Upload a photo<input id="up" type="file" accept="image/jpeg,image/png" hidden></label>
+  <button class="btn btn-outline-primary" id="manual" type="button">Enter manually</button>
+  <button class="btn btn-outline-secondary" id="nocard" type="button">I don't have my card</button></div>
+ <div id="camBox" class="d-none mb-3">
+  <div class="position-relative" style="max-width:420px"><video id="cam" playsinline muted class="w-100 rounded"></video>
+   <div style="position:absolute;inset:18% 6%;border:3px dashed #fff;border-radius:.6rem;pointer-events:none;box-shadow:0 0 0 999px rgba(0,0,0,.35)"></div></div>
+  <p class="small">Line up the card inside the frame, in good light, avoiding glare.</p>
+  <button class="btn btn-primary" id="snap" type="button">Capture</button> <button class="btn btn-outline-secondary" id="camCancel" type="button">Cancel</button></div>
+ <div id="prevBox" class="d-none mb-3"><img id="prev" alt="Preview of your card photo" class="img-fluid rounded border" style="max-width:420px">
+  <div class="mt-2 d-flex flex-wrap gap-2"><button class="btn btn-primary" id="useImg" type="button">Read this image</button><button class="btn btn-outline-secondary" id="retake" type="button">Retake</button><button class="btn btn-outline-danger" id="rmImg" type="button">Remove image</button></div>
+  <div class="progress mt-2 d-none" id="upProg" role="progressbar" aria-label="Upload progress"><div class="progress-bar" id="upBar"></div></div></div>
+ <div id="cardMsg" class="mb-2" aria-live="polite"></div>
+ <div id="cardBox" class="d-none">
+  <label class="form-label" for="hc">Health number (10 digits)</label>
+  <div class="input-group mb-2"><input id="hc" type="password" class="form-control" inputmode="numeric" maxlength="12" autocomplete="off"><button class="btn btn-outline-secondary" id="hcShow" type="button">Show</button></div>
+  <div class="row g-2"><div class="col-6"><label class="form-label" for="vc">Version code</label><input id="vc" class="form-control" maxlength="2" autocomplete="off"></div>
+   <div class="col-6"><label class="form-label" for="exp">Expiry (if shown)</label><input id="exp" class="form-control" autocomplete="off"></div></div>
+  <div id="confBadge" class="small mt-2"></div>
+  <button class="btn btn-outline-primary mt-2" id="confirmCard" type="button">These details are correct</button>
+  <div id="valMsg" class="small mt-2" aria-live="polite"></div></div>
+ <div class="d-flex gap-2 mt-3"><button class="btn btn-outline-secondary" data-go="3" type="button">Back</button><button class="btn btn-primary" data-go="5" type="button">Continue</button></div>
+</section>
+
+<section class="step" data-n="5">
+ <h2>Review and consent</h2>
+ <div id="review" class="mb-3"></div>
+ <div class="form-check mb-2"><input class="form-check-input" type="checkbox" id="c1"><label class="form-check-label" for="c1">Required: I agree my submitted information may be used for registration at this hospital.</label></div>
+ <div class="form-check mb-3"><input class="form-check-input" type="checkbox" id="c2"><label class="form-check-label" for="c2">Optional: I agree to AI-assisted summarizing of my symptom answers.</label></div>
+ <div id="err5" class="text-danger" role="alert"></div>
+ <div class="d-flex flex-wrap gap-2"><button class="btn btn-outline-secondary" data-go="2" type="button">Edit details</button><button class="btn btn-outline-secondary" data-go="3" type="button">Edit symptoms</button><button class="btn btn-primary" id="submit" type="button">Submit pre-registration</button></div>
+</section>
+
+<section class="step" data-n="6">
+ <h2>Online form submitted</h2>
+ <div class="alert alert-info">This is online pre-registration only. It is not completed hospital registration, a queue position, or a triage assessment, and no treatment time is estimated.</div>
+ <p>Reference number: <strong id="ref" class="fs-3"></strong><br><span id="when" class="small"></span></p>
+ <p>Show this reference to staff when you arrive. Still needed: identity check, health card verification, and clinical assessment.</p>
+ <div class="d-flex gap-2"><button class="btn btn-outline-secondary" id="printBtn" type="button">Print summary</button><button class="btn btn-primary" data-go="7" type="button">What happens in person</button></div>
+</section>
+
+<section class="step" data-n="7">
+ <h2>In-person steps</h2>
+ <p class="small">Hospital staff update these. In this demo, staff use the separate dashboard at /staff.</p>
+ <ul id="steps7" class="list-group mb-3"><li class="list-group-item">Loading…</li></ul>
+ <p class="small">This page is not a wristband or hospital identification.</p>
+ <div class="d-flex flex-wrap gap-2"><button class="btn btn-outline-secondary" data-go="6" type="button">Back</button><button class="btn btn-outline-primary" id="refresh" type="button">Refresh status</button><button class="btn btn-primary" data-go="8" type="button">Next</button></div>
+</section>
+
+<section class="step" data-n="8">
+ <h2>Where to go</h2>
+ <div id="dest" class="verified-tag mb-3" aria-live="polite">Please follow the instructions provided by emergency department staff.</div>
+ <p>Tell staff right away if your symptoms get worse.</p>
+ <div class="d-flex gap-2"><button class="btn btn-outline-secondary" data-go="7" type="button">Back</button><button class="btn btn-outline-primary" id="refresh8" type="button">Refresh</button></div>
+</section>
+</main>
+<script src="/static/patient.js" defer></script></body></html>

@@ -1,0 +1,5 @@
+:root{--teal:#0b7a75;--blue:#14508c;--soft:#eef6f7} body{background:#fff;color:#1c2b36}
+h1,h2{color:var(--blue)} .btn-primary{background:var(--teal);border-color:var(--teal)}
+.demo-banner{background:var(--soft);font-size:.9rem}
+.tag-patient{border-left:5px solid #b07d00;background:#fff8e6}.tag-ai{border-left:5px solid var(--teal);background:var(--soft)}.tag-staff{border-left:5px solid var(--blue);background:#f3f7fc}
+:focus-visible{outline:3px solid #f5a300;outline-offset:2px}

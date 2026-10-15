@@ -1,0 +1,15 @@
+:root{--teal:#0b7a75;--blue:#14508c;--ink:#1c2b36;--soft:#eef6f7}
+body{background:#fff;color:var(--ink);font-size:1.1rem;font-family:system-ui,"Segoe UI",sans-serif}
+body.big{font-size:1.3rem} body.contrast{--teal:#005a56;--blue:#0a3566}
+h1,h2{color:var(--blue)} .btn-primary{background:var(--teal);border-color:var(--teal);padding:.8rem 1.6rem}
+.btn-primary:hover{background:var(--blue);border-color:var(--blue)}
+.alert-safety{background:#fff3f3;border:2px solid #b3261e;color:#7a1710}
+.demo-banner{background:var(--soft);font-size:.9rem}
+.progress{height:.7rem} .progress-bar{background:var(--teal)}
+.chat{max-height:45vh;overflow:auto;background:var(--soft);border-radius:.6rem;padding:1rem}
+.msg{margin:.4rem 0;padding:.6rem .9rem;border-radius:.8rem;max-width:85%}
+.bot{background:#fff;border:1px solid #bcd7da}.me{background:var(--blue);color:#fff;margin-left:auto}
+.ai-tag{border-left:5px solid var(--teal);background:var(--soft);padding:.6rem 1rem}
+.verified-tag{border-left:5px solid var(--blue);padding:.6rem 1rem}
+.form-control,.form-select{font-size:inherit} :focus-visible{outline:3px solid #f5a300;outline-offset:2px}
+.step{display:none}.step.active{display:block}

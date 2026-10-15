@@ -1,0 +1,15 @@
+{
+  "_notice": "PLACEHOLDER demonstration rules. A hospital-approved, clinically reviewed rule set must replace this file before any real use. Matching is deliberately conservative: it does not try to detect negation, so 'no chest pain' still shows the warning.",
+  "rules": [
+    {"id": "chest_pain", "patterns": ["chest (pain|pressure|tightness)"]},
+    {"id": "breathing", "patterns": ["(can'?t|cannot|unable to|trouble|difficulty|hard to|struggling to) breath", "short(ness)? of breath"]},
+    {"id": "stroke_signs", "patterns": ["face (is )?(droop|numb)", "slurred (speech|words)", "sudden (weakness|numbness)", "can'?t (move|feel) (my )?(arm|leg|face)"]},
+    {"id": "severe_bleeding", "patterns": ["(severe|heavy|uncontrolled) bleeding", "bleeding (a lot|that won'?t stop|won'?t stop)", "won'?t stop bleeding"]},
+    {"id": "consciousness", "patterns": ["pass(ed)? out", "unconscious", "unresponsive", "faint(ed|ing)"]},
+    {"id": "seizure", "patterns": ["seizure", "convuls"]},
+    {"id": "allergic_reaction", "patterns": ["(throat|tongue|lips?) (is |are )?(swelling|swollen|closing)", "anaphyla"]},
+    {"id": "poisoning", "patterns": ["overdos", "poison", "swallowed (bleach|pills)"]},
+    {"id": "self_harm", "patterns": ["suicid", "kill myself", "end my life", "hurt myself"],
+     "message": "If you are thinking about harming yourself, call or text 9-8-8 or call 911 now, or tell staff right away."}
+  ]
+}
